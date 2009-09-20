@@ -29,17 +29,27 @@ people could profit from my work. The repository includes no ChangeLog or
 other detailed informations about the changes. It's only a quick way to
 distribute the work which has no special purpose.
 
+
                                                Application List <- 0x20000000
                                                ============================== 
 
 The following section lists the single applications and if needed gives a
 short description about it.
         
-        * irc_client.sh := A very simple IRC client on the base of the BASH
-                           and netcat.
+  * irc_client.sh      := A very simple IRC client on the base of the BASH
+                          and netcat.
 
-        * scanMSN.py    := A MSN scanner which filters the contacts from a
-                           sniffing session with scapy.
+  * scanMSN.py         := A MSN scanner which filters the contacts from a
+                          sniffing session with scapy.
+
+  * check_gpsfix.sh    := Lowlevel GPS fix check.
+
+  * secure_connection  := Reads ssh connection commands from a config and
+                          executes it. (SSH connection manager)
+
+  * kismet2tangogps.py := Saves wirleess access points from kismet to POI
+                          in tangogps.
+
 
                                                      Annotation <- 0x30000000
                                                      ======================== 
