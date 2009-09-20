@@ -1,0 +1,54 @@
+/*****************************************************************************
+ *                               (C) obale 2009                              *   
+ *                     ______           _   _       _ _                      *   
+ *                     |  _  \         | \ | |     | | |                     *   
+ *                     | | | |_____   _|  \| |_   _| | |                     *   
+ *                     | | | / _ \ \ / / . ` | | | | | |                     *   
+ *                     | |/ /  __/\ V /| |\  | |_| | | |                     *   
+ *                     |___/ \___| \_/ \_| \_/\__,_|_|_|                     *   
+ *      ==============================================================       *   
+ *      01000100 01100101 01110110 01001110 01110101 01101100 01101100       *   
+ *      ==============================================================       *   
+ *      0x6465766e756c6c2e6e6574776f726c642e746f   devnull.networld.to       *   
+ *                                                                           *   
+ *****************************************************************************/
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  HEADER  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+{       title                        'A small collection of programs';       }   
+{       author                                                'obale';       }   
+{       e-mail                             'obale [at] gmx [d0t] net';       }   
+{       date                                             '2009-09-20';       }   
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                                                   Introduction <- 0x10000000
+                                                   ========================== 
+
+This repository includes small and more or less useful programs and scripts.
+The purpose is to store my written stuff in a central place where other
+people could profit from my work. The repository includes no ChangeLog or
+other detailed informations about the changes. It's only a quick way to
+distribute the work which has no special purpose.
+
+                                               Application List <- 0x20000000
+                                               ============================== 
+
+The following section lists the single applications and if needed gives a
+short description about it.
+        
+        * irc_client.sh := A very simple IRC client on the base of the BASH
+                           and netcat.
+
+        * scanMSN.py    := A MSN scanner which filters the contacts from a
+                           sniffing session with scapy.
+
+                                                     Annotation <- 0x30000000
+                                                     ======================== 
+
+The work saved in this repository are trivial scripts/programs, development
+in a very early stage of development or small stuff which don't suits (at the
+moment) in another project.
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  FOOTER  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+{                   Doscendo Discimus - We learn by teaching                 }   
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
