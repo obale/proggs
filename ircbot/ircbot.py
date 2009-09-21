@@ -21,6 +21,8 @@ import string, random
 import ConfigParser
 import datetime, time
 import sqlite3
+import locale
+import gettext
 
 class IRCBot:
     """
@@ -33,10 +35,18 @@ class IRCBot:
     global LOGGING, LOGFILE
     global DBFILE, DBNAME
     global starttime
+    global _
 
     global socket
 
     def __init__(self):
+        APP_NAME = "ircbot"
+        langs = ["en_EN", "de"]
+        local_path = os.path.realpath(os.path.dirname(sys.argv[0]))
+        gettext.bindtextdomain(APP_NAME, local_path)
+        gettext.textdomain(APP_NAME)
+        self._ = gettext.gettext
+
         self.starttime = datetime.datetime.now()
         config = ConfigParser.SafeConfigParser()
         config.read('./ircbot.cfg')
@@ -79,18 +89,18 @@ class IRCBot:
     def reactOnPRIVMSG(self, line):
         privmsg = line[3].strip(':')
         if ( privmsg == 'uptime' ):
-            msg = 'Master Yoda long time here is. '
+            msg = self._('Master Yoda long time here is. ')
             msg += self.getUptime()
         elif ( privmsg == 'quote' ):
             msg = self.getQuote()
         else:
-            msg = 'Not if anything to say about it!'
+            msg = self._('Not if anything to say about it!')
         self.socket.send('PRIVMSG ' + self.getUser(line[0]) + ' :' + msg + '\r\n')
 
     def reactOnMSG(self, line):
         privmsg = line[3].strip(':')
         if ( privmsg == '!uptime' ):
-            msg = 'Master Yoda long time here is. '
+            msg = self._('Master Yoda long time here is. ')
             msg += self.getUptime()
         elif ( privmsg == '!quote' ):
             msg = self.getQuote()
@@ -131,7 +141,7 @@ class IRCBot:
         return quotes
 
     def greeting(self, line):
-        msg = 'Hi ' + self.getUser(line[0]) + ' my friend. May the force be with you.'
+        msg = self._('Hi ') + self.getUser(line[0]) + self._(' my friend. May the force be with you.')
         self.socket.send('PRIVMSG ' + self.getUser(line[0]) + ' :' + msg + '\r\n')
 
     def logging(self, line):
@@ -154,11 +164,11 @@ class IRCBot:
         minutes, seconds = divmod(time.seconds, 60)
         hours, minutes = divmod(minutes, 60)
 
-        msg = str(weeks) + ' weeks, '
-        msg += str(days) + ' days, '
-        msg += str(hours) + ' hours, '
-        msg += str(minutes) + ' minutes, '
-        msg += str(seconds) + ' seconds.'
+        msg = str(weeks) + self._(' weeks, ')
+        msg += str(days) + self._(' days, ')
+        msg += str(hours) + self._(' hours, ')
+        msg += str(minutes) + self._(' minutes, ')
+        msg += str(seconds) + self._(' seconds.')
 
         return msg
 
