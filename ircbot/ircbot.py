@@ -76,7 +76,9 @@ class IRCBot:
             readbuffer = tmp.pop()
 
             for line in tmp:
-                self.printLine(line)
+                ## XXX: In productive use we don't want that the bot prints
+                ##      all stuff.
+                #self.printLine(line)
                 line = string.rstrip(line)
                 line = string.split(line)
 
@@ -89,5 +91,14 @@ class IRCBot:
         self.socket.send('QUIT :Bot is leaving the house!\r\n')
         sys.exit(0)
 
+if __name__ == "__main__":
+    try:
+        pid = os.fork()
+        if pid > 0:
+            sys.exit(0)
+    except OSError, e:
+        print >> sys.stderr, "fork failed: %d (%s)" % (e.errno, e.strerror)
+        sys.exit(1)
+    obj = IRCBot()
 
-obj = IRCBot()
+
