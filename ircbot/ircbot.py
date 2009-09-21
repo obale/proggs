@@ -19,25 +19,42 @@
 import sys, os, signal, socket
 import string
 import ConfigParser
+import datetime, time
 
 class IRCBot:
+    """
+    A very simple IRC bot written from scratch
+    """
 
     global HOST, PORT, PASS
     global NICKNAME, IDENT, FULLNAME
     global CHANNEL
+    global LOGGING, LOGFILE
+    global starttime
 
     global socket
 
     def __init__(self):
+        self.starttime = datetime.datetime.now()
         config = ConfigParser.SafeConfigParser()
-        config.read('ircbot.cfg')
+        config.read('./ircbot.cfg')
         self.HOST = config.get('server', 'host')
-        self.PORT = int(config.get('server', 'port'))
+        self.PORT = config.getint('server', 'port')
         self.PASS = config.get('server', 'password')
         self.NICKNAME = config.get('bot', 'nickname')
         self.FULLNAME = config.get('bot', 'fullname')
         self.IDENT = config.get('bot', 'ident')
         self.CHANNEL = config.get('channel', 'mainchannel')
+        self.LOGGING = config.getboolean('server', 'logging')
+        if self.LOGGING:
+            self.LOGFILE = config.get('server', 'logfile')
+            file = open(self.LOGFILE, 'a')
+            dt = datetime.datetime.now()
+            now = dt.strftime("%A, %d. %B %Y %H:%M")
+            str = '======================== BEGIN LOGIN: ' + now \
++ ' ========================\n'
+            file.write(str)
+            file.close()
 
         signal.signal(signal.SIGINT, self.clean)
 
@@ -56,17 +73,45 @@ class IRCBot:
         self.socket.send('JOIN ' + self.CHANNEL + '\r\n')
 
     def reactOnPRIVMSG(self, line):
-        try:
-            if ( line[1] == 'PRIVMSG' and line[2] == 'yoda' ):
-                        str = "Sorry dude, at the moment I'm very dump and can't react on your message :("
-                        user = line[0].strip(':')
-                        user = user.split('!')
-                        self.socket.send('PRIVMSG ' + user[0] + ' :' + str + '\r\n')
-        except Exception:
-            pass
+        privmsg = line[3].strip(':')
+        if ( privmsg == 'uptime' ):
+            msg = 'Master Yoda long time here is. '
+            msg += self.getUptime()
+        else:
+            msg = 'Not if anything to say about it!'
+        self.socket.send('PRIVMSG ' + self.getUser(line[0]) + ' :' + msg + '\r\n')
 
-    def printLine(self, line):
-        print line
+    def greeting(self, line):
+        msg = 'Hi ' + self.getUser(line[0]) + ' my friend. May the force be with you.'
+        self.socket.send('PRIVMSG ' + self.getUser(line[0]) + ' :' + msg + '\r\n')
+
+    def logging(self, line):
+        if not self.LOGGING:
+            return
+        file = open(self.LOGFILE, 'a')
+        file.write(line + '\n')
+        file.close
+
+    def getUser(self, line):
+        user = line.strip(':')
+        user = user.split('!')
+        return user[0]
+
+    def getUptime(self):
+        now = datetime.datetime.now()
+        time = now - self.starttime
+
+        weeks, days = divmod(time.days, 7)
+        minutes, seconds = divmod(time.seconds, 60)
+        hours, minutes = divmod(minutes, 60)
+
+        msg = str(weeks) + ' weeks, '
+        msg += str(days) + ' days, '
+        msg += str(hours) + ' hours, '
+        msg += str(minutes) + ' minutes, '
+        msg += str(seconds) + ' seconds.'
+
+        return msg
 
     def loop(self):
         readbuffer = ""
@@ -76,13 +121,17 @@ class IRCBot:
             readbuffer = tmp.pop()
 
             for line in tmp:
-                ## XXX: In productive use we don't want that the bot prints
-                ##      all stuff.
-                #self.printLine(line)
+                self.logging(line)
                 line = string.rstrip(line)
                 line = string.split(line)
 
-                self.reactOnPRIVMSG(line)
+                try:
+                    if ( self.getUser(line[0]) != self.NICKNAME and line[1] == 'PRIVMSG' and line[2] == self.NICKNAME ):
+                        self.reactOnPRIVMSG(line)
+                    elif ( self.getUser(line[0]) != self.NICKNAME and line[1] == 'JOIN' ):
+                        self.greeting(line)
+                except Exception:
+                    pass
 
                 if ( line[0] == 'PING' ):
                     self.socket.send('PONG ' + line[1] + '\r\n')
@@ -99,6 +148,7 @@ if __name__ == "__main__":
     except OSError, e:
         print >> sys.stderr, "fork failed: %d (%s)" % (e.errno, e.strerror)
         sys.exit(1)
-    obj = IRCBot()
-
-
+    #os.chdir('/')
+    os.setsid()
+    os.umask(0)
+    IRCBot()
