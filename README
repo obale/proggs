@@ -50,6 +50,8 @@ short description about it.
   * kismet2tangogps.py := Saves wirleess access points from kismet to POI
                           in tangogps.
 
+  * ircbot             := A very simple IRC bot in python
+
 
                                                      Annotation <- 0x30000000
                                                      ======================== 
