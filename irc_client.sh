@@ -33,11 +33,11 @@ init() {
 }
 
 followinput() {
-        tail -f --retry -s $sleepinterval $ircin 2> /dev/null | nc $server $port >> $ircout & inputpid=$!
+        ( tail -f --retry -s $sleepinterval $ircin 2> /dev/null | nc -vv -w 8 -o /tmp/hexout $server $port >> $ircout ) & inputpid=$!
 }
 
 outputserver() {
-        tail -f --retry -s $sleepinterval $ircout & outputpid=$!
+        tail -f -s $sleepinterval $ircout & outputpid=$!
 }
 
 login() {
@@ -50,7 +50,7 @@ keepalive() {
         while [ 1 == 1 ]; do
                 echo "PONG !" >> $ircin
                 sleep 90
-        done
+        done & keepalivepid=$!
 }
 
 parseinput() {
@@ -63,6 +63,9 @@ parseinput() {
                 elif [[ ${line:0:4} == "JOIN" ]]; then
                         channel=${line:4}
                         echo $line >> $ircin
+                elif [[ ${line:0:4} == "PART" ]]; then
+                        unset channel
+                        echo $line >> $ircin
                 elif [[ ${line:0:4} == "QUIT" ]]; then
                         quit 2> /dev/null
                 else
@@ -72,10 +75,10 @@ parseinput() {
 }
 
 quit() {
-        kill -9 $keepalivepid
-        echo "QUIT" >> $ircin
-        sleep 1
-        kill -9 $inputpid $outputpid
+        echo "QUIT :Goodbye IRC server!" >> $ircin
+        sleep 2
+        kill -9 $keepalivepid $outputpid
+        killall tail
         rm -rf $ircin
         exit 0
 }
@@ -84,5 +87,5 @@ init
 followinput
 login
 outputserver
-keepalive & keepalivepid=$!
+keepalive
 parseinput
