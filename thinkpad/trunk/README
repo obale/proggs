@@ -1,0 +1,60 @@
+MAINTAINER
+==========
+
+Alex (obale) Oberhauser
+<oberhauseralex [at] gmx [dot] de>
+http://devnull.networld.to
+
+DESCRIPTION
+===========
+
+   The library will be provide a few function for the thinkpad notebooks. At 
+the moment you can use two function to use the light above the screen. With 
+one the light blinks at customs intervalls. The other is more intersting, 
+because you can morse a character and strings. 
+
+INSTALL
+=======
+
+   Now there are two ways to compile the program (static and dynamic). I
+recommend the static way.
+
+0. Compiling both versions
+
+   If you want test both version use 'make all'. To start the dynamic version
+   you need to set the environment variable ('source env-update')
+
+1. Compile statically
+
+   Start the compiling process with 'make static'. If the compiling finish
+   without errors you can use the test program (./thinkpadTestDynamic).
+
+   Use 'make static && ./thinkpadTestStatic' to make all in one step (optional
+   are parameters, without parameters you see a short help).
+
+2. Compile dynamically
+  
+   Start the compiling process with 'make dynamic'. If the compiling finish
+   without errors you must set-up the environment variables. Use for this
+   purpose 'source env-update'. Than you can use the test program
+   (./thinkpadTestDynamic).
+
+   Use 'make dynamic && source env-update && ./thinkpadTestDynamic' to make
+   all in one step (optional are parameters, without parameters you see a
+   short help).
+
+
+TODO
+====
+
+x Make than a library (dynamic and static). [DONE]
+x Document the whole project.
+- Implemnt also the other features of the thinkpad notebook (not only the
+  light).
+- Don't use the file in the /proc file, use the driver directly.
+- Extract the hardware specific part from the functions.
+- Split the files into one file per feature (ad example one for the light, one
+  for the background light, ...)
+- Make a ebuild (gentoo) for the library
+- ...
+

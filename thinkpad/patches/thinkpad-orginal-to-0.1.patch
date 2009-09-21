@@ -1,0 +1,322 @@
+Index: thinkpadTest
+===================================================================
+Kann nicht anzeigen: Dateityp ist als binär angegeben.
+svn:mime-type = application/octet-stream
+Index: thinkpad.c
+===================================================================
+--- thinkpad.c	(.../orginal)	(Revision 24)
++++ thinkpad.c	(.../0.1)	(Revision 24)
+@@ -67,26 +67,32 @@
+  * This function takes a char, and blinks than the letter in morsecode.
+  * Morsecode ("." = short alias point, "-" = long alias line):
+  *
+- * a -> .-			n -> -.
+- * b -> -...			o -> ---
+- * c -> -.-.			p -> .--.
+- * d -> -..			q -> --.-
+- * e -> .			r -> .-.
+- * f -> ..-.			s -> ...
+- * g -> --.			t -> -
+- * h -> ....			u -> ..-
+- * i -> ..			v -> ...-
+- * j -> .---			w -> .-- 
+- * k -> -.-			x -> -..-
+- * l -> .-..			y -> -.--
+- * m -> -- 			z -> --..
++ * a -> .-                      n -> -.
++ * b -> -...                    o -> ---
++ * c -> -.-.                    p -> .--.
++ * d -> -..                     q -> --.-
++ * e -> .                       r -> .-.
++ * f -> ..-.                    s -> ...
++ * g -> --.                     t -> -
++ * h -> ....                    u -> ..-
++ * i -> ..                      v -> ...-
++ * j -> .---                    w -> .-- 
++ * k -> -.-                     x -> -..-
++ * l -> .-..                    y -> -.--
++ * m -> --                      z -> --..
+  *
++ * 1 -> .----                   6 -> -....
++ * 2 -> ..---                   7 -> --...
++ * 3 -> ...--                   8 -> ---..
++ * 4 -> ....-                   9 -> ----. 
++ * 5 -> .....                   0 -> -----
++ *
+  * @param The char for the morsecode
+  *
+  * @return The return value is 0 if all is okay or -1 if they was an error
+  *
+  */
+-int blinkMorse(char c) {
++int blinkMorseChar(char c) {
+ 
+ 	// Initial the values of the morse parts
+ 	struct Morsecode *morse = &morsecode;
+@@ -109,13 +115,6 @@
+ 	morse->pausechar = morse->line;
+ 	morse->pauseword = ( 7 * morse->point );
+ 
+-	// Only for debug purpose
+-	printf("\nmorse point length: %d\n", morse->point);
+-	printf("morse line length: %d\n", morse->line);
+-	printf("morse pause length: %d\n", morse->pause);
+-	printf("morse pausechar length: %d\n", morse->pausechar);
+-	printf("morse pauseword length: %d\n", morse->pauseword);
+-
+ 	switch(c) {
+ 		case 'a':	MORSPOINT	
+ 				sleep(morse->pause);
+@@ -308,9 +307,153 @@
+ 				MORSPOINT
+ 				break;
+ 
++		case '1':	MORSPOINT
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				break;
++
++		case '2':	MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				break;
++
++		case '3':	MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				break;
++
++		case '4':	MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSLINE
++				break;
++
++		case '5':	MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				break;
++
++		case '6':	MORSLINE
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				break;
++
++		case '7':	MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				break;
++
++		case '8':	MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSPOINT
++				sleep(morse->pause);
++				MORSPOINT
++				break;
++
++		case '9':	MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSPOINT
++				break;
++
++		case '0':	MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				sleep(morse->pause);
++				MORSLINE
++				break;
++
+ 		default: 	return -1;
+ 				break;
+ 	}
+ 
+ 	return 0;
+ }
++
++int blinkMorseString(char c[]) {
++	int n = 0;
++	struct Morsecode *morse = &morsecode;
++
++	/*
++	 * How we define the morsecode:
++	 *
++	 * A line is exact time so long as a point.
++	 * The pause within a character is so long as a point.
++	 * The pause between the characters is so long as a line.
++	 * The pause between words is exact 7 points long.
++	 *
++	 * ATTENTION: Please edit only the value of the point.
++	 * The rest has fix values.
++	 *
++	 */
++	morse->point = 1;
++	morse->line = ( 3 * morse->point );
++	morse->pause = morse->point;
++	morse->pausechar = morse->line;
++	morse->pauseword = ( 7 * morse->point );
++
++	while (1) {
++		if (c[n] == ' ') sleep(morse->pauseword);
++		else {
++			blinkMorseChar(c[n]);
++			if (c[n] == '\n') break;
++			sleep(morse->pausechar);
++		}
++		n++;
++	}
++	return 0;
++}
+Index: thinkpadTest.c
+===================================================================
+--- thinkpadTest.c	(.../orginal)	(Revision 24)
++++ thinkpadTest.c	(.../0.1)	(Revision 24)
+@@ -1,9 +1,10 @@
+ /******************************************************************************
+- * DESCRIPTION          Write here a short summary what the program does.     *
++ * DESCRIPTION          A short test program for the implementations of the   *
++ *                      thinkpad toolkit by me.                               * 
+  *                                                                            *
+  * AUTHOR:              Alex Oberhauser                                       *
+- * DATE:                200x-xx-xx                                            *
+- * VERSION:             x.xx                                                  *
++ * DATE:                2007-12-26                                            *
++ * VERSION:             0.01                                                  *
+  *                                                                            *
+  * XXX:                 No known bugs in this version.                        *
+  *                                                                            *
+@@ -36,6 +37,7 @@
+ int main(int argc, char *argv[]) {
+ 	// Define local variables in the main
+ 	char c;
++	char *str;
+ 	int on;
+ 	int off;
+ 	int num;
+@@ -49,10 +51,19 @@
+ 			printf("What character would you morse (0 to exit): ");
+ 			scanf("%c", &c);
+ 			if (c == '0') return 0;
+-			blinkMorse(c);
++			blinkMorseChar(c);
+ 			return 0;
+ 		}
+ 
++		else if ( strcmp(argv[1], "--morsestring") == 0
++				|| strcmp(argv[1], "-ms") == 0) {
++			printf("What string would you morse (0 to exit): ");
++			fgets(str, 1024, stdin);
++			printf("%s", str);
++			if (c == '0') return 0;
++			blinkMorseString(str);
++		}
++
+ 		else if ( strcmp(argv[1], "--blink") == 0
+ 				|| strcmp(argv[1], "-b") == 0) {
+ 			printf("Light on: ");
+Index: thinkpad.h
+===================================================================
+--- thinkpad.h	(.../orginal)	(Revision 24)
++++ thinkpad.h	(.../0.1)	(Revision 24)
+@@ -16,7 +16,6 @@
+ #define LIGHTPROC "/proc/acpi/ibm/light"
+ 
+ /*
+- * @deprecated
+  * Morse
+  * 	POINT - short signal
+  * 	LINE - long signal
+@@ -52,4 +51,6 @@
+  * @return The return value is 0 if all is okay or -1 if they was an error
+  * 
+  */
+-extern int blinkMorse(char c);
++extern int blinkMorseChar(char c);
++
++extern int blinkMorseString(char *c);
+Index: readme.txt
+===================================================================
+--- readme.txt	(.../orginal)	(Revision 24)
++++ readme.txt	(.../0.1)	(Revision 24)
+@@ -1,15 +1,18 @@
++$Revision::                                                         $:
++$LastChangedDate::                                                  $:
++$Author::                                                           $:
++
+ -= MAINTAINER =-
+ 
+ Alex (obale) Oberhauser
+-<obale@gmx.net>
++<obale [at] gmx [dot] net>
+ http://devnull.networld.to
+ 
+ -= DESCRIPTION =-
+ The library will be provide a few function for the thinkpad notebooks. At the
+ moment you can use two function to use the light above the screen. With one
+ the light blinks at customs intervalls. The other is more intersting, because
+-you can morse a character. In the next step I will implement the morse of a
+-string.
++you can morse a character and strings. 
+ 
+ -= INSTALL =-
+ 
+
+Eigenschaftsänderungen: readme.txt
+___________________________________________________________________
+Name: svn:keywords
+   + Revision HeadUrl LastChangedDate Author
+

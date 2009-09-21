@@ -1,0 +1,52 @@
+8
+
+dir
+36
+svn+ssh://networld.to/projects/thinkpad/branches/devAutoconf/src/.deps
+svn+ssh://networld.to/projects/thinkpad
+
+
+
+2008-01-10T13:25:49.087571Z
+31
+obale
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+ae07779f-1a77-4ba4-b2ba-32fdd882618b
+
+thinkpad.Po
+file
+
+
+
+
+2008-01-21T14:25:38.000000Z
+b25ed9b3fda6c31f023bc4f22a3dab2a
+2008-01-10T13:25:49.087571Z
+31
+obale
+
+thinkpadTest.Po
+file
+
+
+
+
+2008-01-21T14:25:38.000000Z
+3f20ddd4f50f0c2b6ece815c807c24e3
+2008-01-10T13:25:49.087571Z
+31
+obale
+

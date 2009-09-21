@@ -1,0 +1,39 @@
+2008-01-19 Alex Oberhauser <oberhauseralex@gmx.de>
+
+	* trunk/libthinkpad.c:
+	* trunk/libthinkpad.h:
+	Renaming the file thinkpad.c and thikpad.h to libthinkpad.c and
+	libthinkpad.h.
+
+	* trunk/Makefile:
+	Splitting the compiling process into two parts. One for a static
+	testing program and one for a dynamic.
+	Adding also a short help ('make' or 'make help') and the legal note.
+
+	* trunk/thinpadTestStatic:
+	* trunk/thinpadTestDynamic:
+	The new executables are thinkpadTestStatic and thinkpadTestDynamic.
+	Depends how you compile the program.
+
+	* trunk/lib:
+	* trunk/lib/static:
+	* trunk/lib/dynamic:
+	Adding the directory structure lib with the subdirectorys static and
+	dynamic for the two types of librarys.
+
+	* trunk/env-update:
+	Adding the command 'export LD_LIBRARY_PATH=$(pwd)/lib/dynamic' to a
+	seperate file. So you can set up the right library path with 'source
+	env-update'.
+
+2008-01-18 Alex Oberhauser <oberhauseralex@gmx.de>
+
+	* tags/thinkpad-0.1.tar.gz:
+	Adding the archive of the version 0.1 to the tags.
+
+	* tags/thinkpad_0.1-1_i386.deb:
+	Creating a dep file (dpkg file for Debian based operating systems)
+	from the thinkpad-0.1.tar.gz source.
+
+	* ChangeLog:
+	Adding this logfile to the parent directory.

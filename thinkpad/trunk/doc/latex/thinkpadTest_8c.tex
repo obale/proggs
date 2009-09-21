@@ -1,0 +1,198 @@
+\hypertarget{thinkpadTest_8c}{
+\section{thinkpadTest.c File Reference}
+\label{thinkpadTest_8c}\index{thinkpadTest.c@{thinkpadTest.c}}
+}
+
+
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include $<$string.h$>$}\par
+{\tt \#include $<$errno.h$>$}\par
+{\tt \#include $<$sys/types.h$>$}\par
+{\tt \#include $<$unistd.h$>$}\par
+{\tt \#include $<$signal.h$>$}\par
+{\tt \#include $<$wait.h$>$}\par
+{\tt \#include \char`\"{}libthinkpad.h\char`\"{}}\par
+
+
+Include dependency graph for thinkpadTest.c:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=314pt]{thinkpadTest_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\#define \hyperlink{thinkpadTest_8c_735563036dced0b7d6cc98f97ea4978b}{ERR}~error\_\-handler
+\item 
+\#define \hyperlink{thinkpadTest_8c_d61c6e0b19ce1ad5cd8846abc3fb21b7}{STRLENGTH}~1024
+\item 
+\#define \hyperlink{thinkpadTest_8c_a93f0eb578d23995850d61f7d61c55c1}{FALSE}~0
+\item 
+\#define \hyperlink{thinkpadTest_8c_a8cecfc5c5c054d2875c03e77b7be15d}{TRUE}~!FALSE
+\end{CompactItemize}
+\subsection*{Typedefs}
+\begin{CompactItemize}
+\item 
+typedef int \hyperlink{thinkpadTest_8c_621c38f1f10a1c565d897e3178b16d6e}{boolean}
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+int \hyperlink{thinkpadTest_8c_da2823036b025c54a023335c757a6ae7}{error\_\-handler} (char $\ast$fctname, int errornb)
+\item 
+int \hyperlink{thinkpadTest_8c_2a3542d20c2ebfa5fbc7e21e49d6fa77}{help\_\-function} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{thinkpadTest_8c_38c50645b14fe30ab63098bc596f8a5b}{showWarranty} ()
+\item 
+void \hyperlink{thinkpadTest_8c_1cee2421b716d16a38e833923a3e2698}{showLicense} ()
+\item 
+int \hyperlink{thinkpadTest_8c_0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{CompactItemize}
+
+
+\subsection{Define Documentation}
+\hypertarget{thinkpadTest_8c_735563036dced0b7d6cc98f97ea4978b}{
+\index{thinkpadTest.c@{thinkpadTest.c}!ERR@{ERR}}
+\index{ERR@{ERR}!thinkpadTest.c@{thinkpadTest.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define ERR~error\_\-handler}}
+\label{thinkpadTest_8c_735563036dced0b7d6cc98f97ea4978b}
+
+
+
+
+Definition at line 32 of file thinkpadTest.c.\hypertarget{thinkpadTest_8c_a93f0eb578d23995850d61f7d61c55c1}{
+\index{thinkpadTest.c@{thinkpadTest.c}!FALSE@{FALSE}}
+\index{FALSE@{FALSE}!thinkpadTest.c@{thinkpadTest.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define FALSE~0}}
+\label{thinkpadTest_8c_a93f0eb578d23995850d61f7d61c55c1}
+
+
+
+
+Definition at line 36 of file thinkpadTest.c.\hypertarget{thinkpadTest_8c_d61c6e0b19ce1ad5cd8846abc3fb21b7}{
+\index{thinkpadTest.c@{thinkpadTest.c}!STRLENGTH@{STRLENGTH}}
+\index{STRLENGTH@{STRLENGTH}!thinkpadTest.c@{thinkpadTest.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define STRLENGTH~1024}}
+\label{thinkpadTest_8c_d61c6e0b19ce1ad5cd8846abc3fb21b7}
+
+
+
+
+Definition at line 34 of file thinkpadTest.c.\hypertarget{thinkpadTest_8c_a8cecfc5c5c054d2875c03e77b7be15d}{
+\index{thinkpadTest.c@{thinkpadTest.c}!TRUE@{TRUE}}
+\index{TRUE@{TRUE}!thinkpadTest.c@{thinkpadTest.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define TRUE~!FALSE}}
+\label{thinkpadTest_8c_a8cecfc5c5c054d2875c03e77b7be15d}
+
+
+
+
+Definition at line 37 of file thinkpadTest.c.
+
+\subsection{Typedef Documentation}
+\hypertarget{thinkpadTest_8c_621c38f1f10a1c565d897e3178b16d6e}{
+\index{thinkpadTest.c@{thinkpadTest.c}!boolean@{boolean}}
+\index{boolean@{boolean}!thinkpadTest.c@{thinkpadTest.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}typedef int {\bf boolean}}}
+\label{thinkpadTest_8c_621c38f1f10a1c565d897e3178b16d6e}
+
+
+
+
+Definition at line 39 of file thinkpadTest.c.
+
+\subsection{Function Documentation}
+\hypertarget{thinkpadTest_8c_da2823036b025c54a023335c757a6ae7}{
+\index{thinkpadTest.c@{thinkpadTest.c}!error\_\-handler@{error\_\-handler}}
+\index{error\_\-handler@{error\_\-handler}!thinkpadTest.c@{thinkpadTest.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}int error\_\-handler (char $\ast$ {\em fctname}, int {\em errornb})}}
+\label{thinkpadTest_8c_da2823036b025c54a023335c757a6ae7}
+
+
+
+
+Definition at line 108 of file thinkpadTest.c.\hypertarget{thinkpadTest_8c_2a3542d20c2ebfa5fbc7e21e49d6fa77}{
+\index{thinkpadTest.c@{thinkpadTest.c}!help\_\-function@{help\_\-function}}
+\index{help\_\-function@{help\_\-function}!thinkpadTest.c@{thinkpadTest.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}int help\_\-function (int {\em argc}, char $\ast$ {\em argv}\mbox{[}$\,$\mbox{]})}}
+\label{thinkpadTest_8c_2a3542d20c2ebfa5fbc7e21e49d6fa77}
+
+
+
+
+Definition at line 118 of file thinkpadTest.c.
+
+References LIGHTPROC.
+
+Referenced by main().
+
+Here is the caller graph for this function:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=94pt]{thinkpadTest_8c_2a3542d20c2ebfa5fbc7e21e49d6fa77_icgraph}
+\end{center}
+\end{figure}
+\hypertarget{thinkpadTest_8c_0ddf1224851353fc92bfbff6f499fa97}{
+\index{thinkpadTest.c@{thinkpadTest.c}!main@{main}}
+\index{main@{main}!thinkpadTest.c@{thinkpadTest.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}int main (int {\em argc}, char $\ast$ {\em argv}\mbox{[}$\,$\mbox{]})}}
+\label{thinkpadTest_8c_0ddf1224851353fc92bfbff6f499fa97}
+
+
+
+
+Definition at line 49 of file thinkpadTest.c.
+
+References blinkLight(), blinkMorseChar(), blinkMorseString(), help\_\-function(), showLicense(), and showWarranty().
+
+Here is the call graph for this function:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=161pt]{thinkpadTest_8c_0ddf1224851353fc92bfbff6f499fa97_cgraph}
+\end{center}
+\end{figure}
+\hypertarget{thinkpadTest_8c_1cee2421b716d16a38e833923a3e2698}{
+\index{thinkpadTest.c@{thinkpadTest.c}!showLicense@{showLicense}}
+\index{showLicense@{showLicense}!thinkpadTest.c@{thinkpadTest.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void showLicense ()}}
+\label{thinkpadTest_8c_1cee2421b716d16a38e833923a3e2698}
+
+
+
+
+Definition at line 141 of file thinkpadTest.c.
+
+Referenced by main().
+
+Here is the caller graph for this function:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=92pt]{thinkpadTest_8c_1cee2421b716d16a38e833923a3e2698_icgraph}
+\end{center}
+\end{figure}
+\hypertarget{thinkpadTest_8c_38c50645b14fe30ab63098bc596f8a5b}{
+\index{thinkpadTest.c@{thinkpadTest.c}!showWarranty@{showWarranty}}
+\index{showWarranty@{showWarranty}!thinkpadTest.c@{thinkpadTest.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void showWarranty ()}}
+\label{thinkpadTest_8c_38c50645b14fe30ab63098bc596f8a5b}
+
+
+
+
+Definition at line 137 of file thinkpadTest.c.
+
+Referenced by main().
+
+Here is the caller graph for this function:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=96pt]{thinkpadTest_8c_38c50645b14fe30ab63098bc596f8a5b_icgraph}
+\end{center}
+\end{figure}
