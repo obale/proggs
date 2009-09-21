@@ -20,6 +20,7 @@ import sys, os, signal, socket
 import string, random
 import ConfigParser
 import datetime, time
+import sqlite3
 
 class IRCBot:
     """
@@ -30,6 +31,7 @@ class IRCBot:
     global NICKNAME, IDENT, FULLNAME
     global CHANNEL
     global LOGGING, LOGFILE
+    global DBFILE, DBNAME
     global starttime
 
     global socket
@@ -45,6 +47,8 @@ class IRCBot:
         self.FULLNAME = config.get('bot', 'fullname')
         self.IDENT = config.get('bot', 'ident')
         self.CHANNEL = config.get('channel', 'mainchannel')
+        self.DBFILE = config.get('quotes', 'dbfile')
+        self.DBNAME = config.get('quotes', 'dbname')
         self.LOGGING = config.getboolean('server', 'logging')
         if self.LOGGING:
             self.LOGFILE = config.get('server', 'logfile')
@@ -95,35 +99,36 @@ class IRCBot:
         self.socket.send('PRIVMSG ' + self.CHANNEL + ' :' + msg + '\r\n')
 
     def getQuote(self):
-        quotes = [ ]
-        quotes.append("Agree with you, the council does. Your apprentice, Skywalker will be.")
-        quotes.append("Always two there are, no more, no less: a master and an apprentice.")
-        quotes.append("Fear is the path to the Dark Side. Fear leads to anger, anger leads to hate; hate leads to suffering. I sense much fear in you." )
-        quotes.append("Qui-Gon's defiance I sense in you.")
-        quotes.append("Truly wonderful the mind of a child is.")
-        quotes.append("Around the survivors a perimeter create.")
-        quotes.append("Lost a planet Master Obi-Wan has. How embarrassing ... how embarrassing.")
-        quotes.append("Victory, you say? Master Obi-Wan, not victory. The shroud of the Dark Side has fallen. Begun the Clone War has.")
-        quotes.append("Much to learn you still have ... my old padawan. ... This is just the beginning!")
-        quotes.append("Twisted by the Dark Side young Skywalker has become.")
-        quotes.append("The boy you trained, gone he is, consumed by Darth Vader.")
-        quotes.append("Death is a natural part of life. Rejoice for those around you who transform into the Force. Mourn them do not. Miss them do not. Attachment leads to jealousy. The shadow of greed that is. Train yourself to let go of everything you fear to lose.")
-        quotes.append("The fear of loss is a path to the Dark Side.")
-        quotes.append("If into the security recordings you go, only pain will you find.")
-        quotes.append("Not if anything to say about it I have")
-        quotes.append("Great warrior, hmm? Wars not make one great.")
-        quotes.append("Do or do not; there is no try.")
-        quotes.append("Size matters not. Look at me. Judge me by my size, do you?")
-        quotes.append("That is why you fail.")
-        quotes.append("No! No different. Only different in your mind. You must unlearn what you have learned.")
-        quotes.append("Always in motion the future is.")
-        quotes.append("Reckless he is. Matters are worse.")
-        quotes.append("No. There is another. ...")
-        quotes.append("When nine hundred years old you reach, look as good, you will not.")
-        quotes.append("There is ... another ... Sky ... walker. ...")
-        quotes.append("When 900 years old you reach, look as good you will not ehh.")
-        rand = random.randint(0, 3)
-        return quotes[rand]
+        conn = sqlite3.connect(self.DBFILE)
+        curs = conn.cursor()
+
+        query = "select min(id) from " + self.DBNAME
+        curs.execute(query)
+        minrow = int(curs.fetchone()[0])
+        conn.commit()
+
+        query = "select max(id) from " + self.DBNAME
+        curs.execute(query)
+        maxrow = int(curs.fetchone()[0])
+        conn.commit()
+
+        rand = random.randint(minrow, maxrow)
+        query = "SELECT quote FROM yoda_en WHERE id=" + str(rand)
+        curs.execute(query)
+        quotes = curs.fetchone()[0]
+        conn.commit()
+
+        curs.close()
+        return quotes
+
+        rand = random.randint(1, 3)
+        curs.execute("SELECT text FROM ? WHERE id=?", (self.DBNAME, rand) )
+        quotes = curs.fetchone()
+
+        conn.commit()
+        curs.close()
+
+        return quotes
 
     def greeting(self, line):
         msg = 'Hi ' + self.getUser(line[0]) + ' my friend. May the force be with you.'
@@ -186,7 +191,9 @@ class IRCBot:
         self.socket.send('QUIT :Bot is leaving the house!\r\n')
         sys.exit(0)
 
-if __name__ == "__main__":
+IRCBot()
+
+if __name__ == "__main_":
     try:
         pid = os.fork()
         if pid > 0:
