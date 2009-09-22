@@ -1,4 +1,4 @@
-# German translations for PACKAGE package.
+# Language lang/de translations for PACKAGE package.
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #  <oberhauseralex@networld.to>, 2009.
@@ -7,47 +7,46 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-21 22:55+0200\n"
-"PO-Revision-Date: 2009-09-21 22:55+0200\n"
+"POT-Creation-Date: 2009-09-22 11:48+0200\n"
+"PO-Revision-Date: 2009-09-22 11:48+0200\n"
 "Last-Translator:  <oberhauseralex@networld.to>\n"
-"Language-Team: German\n"
+"Language-Team: Language lang/de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ircbot.py:92 ircbot.py:103
-msgid "Master Yoda long time here is. "
-msgstr "Meister Yoda sein eine lange Zeit hier. "
-
-#: ircbot.py:97
-msgid "Not if anything to say about it!"
-msgstr "Nichts zu sagen ich hab!"
-
-#: ircbot.py:144
+#: modules/react.py:10
 msgid "Hi "
 msgstr "Hallo "
 
-#: ircbot.py:144
+#: modules/react.py:10
 msgid " my friend. May the force be with you."
 msgstr " mein Freund. Die Macht sei mit dir."
 
-#: ircbot.py:167
+#: modules/react.py:17 modules/react.py:30
+msgid "Master Yoda long time here is. "
+msgstr "Meister Yoda sein eine lange Zeit hier. "
+
+#: modules/react.py:22
+msgid "Not if anything to say about it!"
+msgstr "Nichts zu sagen ich hab!"
+
+#: modules/react.py:81
 msgid " weeks, "
 msgstr " Wochen, "
 
-#: ircbot.py:168
+#: modules/react.py:82
 msgid " days, "
 msgstr " Tage, "
 
-#: ircbot.py:169
+#: modules/react.py:83
 msgid " hours, "
 msgstr " Stunden, "
 
-#: ircbot.py:170
+#: modules/react.py:84
 msgid " minutes, "
 msgstr " Minuten, "
 
-#: ircbot.py:171
+#: modules/react.py:85
 msgid " seconds."
 msgstr " Sekunden."

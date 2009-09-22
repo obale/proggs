@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-21 22:55+0200\n"
+"POT-Creation-Date: 2009-09-22 11:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,38 +16,38 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ircbot.py:92 ircbot.py:103
-msgid "Master Yoda long time here is. "
-msgstr ""
-
-#: ircbot.py:97
-msgid "Not if anything to say about it!"
-msgstr ""
-
-#: ircbot.py:144
+#: modules/react.py:10
 msgid "Hi "
 msgstr ""
 
-#: ircbot.py:144
+#: modules/react.py:10
 msgid " my friend. May the force be with you."
 msgstr ""
 
-#: ircbot.py:167
+#: modules/react.py:17 modules/react.py:30
+msgid "Master Yoda long time here is. "
+msgstr ""
+
+#: modules/react.py:22
+msgid "Not if anything to say about it!"
+msgstr ""
+
+#: modules/react.py:81
 msgid " weeks, "
 msgstr ""
 
-#: ircbot.py:168
+#: modules/react.py:82
 msgid " days, "
 msgstr ""
 
-#: ircbot.py:169
+#: modules/react.py:83
 msgid " hours, "
 msgstr ""
 
-#: ircbot.py:170
+#: modules/react.py:84
 msgid " minutes, "
 msgstr ""
 
-#: ircbot.py:171
+#: modules/react.py:85
 msgid " seconds."
 msgstr ""
