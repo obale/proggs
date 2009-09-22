@@ -85,9 +85,7 @@ class IRCBot:
         soc.send('QUIT :Bot is leaving the house!\r\n')
         sys.exit(0)
 
-IRCBot()
-
-if __name__ == "__main_":
+if __name__ == "__main__":
     try:
         pid = os.fork()
         if pid > 0:
