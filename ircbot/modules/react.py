@@ -5,6 +5,7 @@ import time
 import datetime
 import lang
 import helper
+import tweet
 
 def greeting(soc, line):
     _ = lang.getGettext()
@@ -19,6 +20,12 @@ def reactOnPRIVMSG(soc, line):
         msg += getUptime()
     elif ( privmsg == 'quote' ):
         msg = getQuote()
+    elif ( privmsg == 'tweet' ):
+        try:
+            name = line[4]
+        except Exception:
+            name = None
+        msg = tweet.getTimeline(name)
     else:
         msg = _('Not if anything to say about it!')
     soc.send('PRIVMSG ' + helper.getUser(line[0]) + ' :' + msg + '\r\n')
@@ -32,6 +39,12 @@ def reactOnMSG(soc, line):
         msg += getUptime()
     elif ( privmsg == '!quote' ):
         msg = getQuote()
+    elif ( privmsg == '!tweet' ):
+        try:
+            name = line[4]
+        except Exception:
+            name = None
+        msg = tweet.getTimeline(name)
     else:
         return
     soc.send('PRIVMSG ' + channel + ' :' + msg + '\r\n')

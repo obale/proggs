@@ -37,6 +37,8 @@ class IRCBot:
         * logging
         * config
         * multilanguage (de/en)
+        * utf-8 support
+        * get last Twitter message from given account.
     """
     global _
 

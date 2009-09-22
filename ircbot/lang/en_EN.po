@@ -27,7 +27,7 @@ msgstr " my friend. May the force be with you."
 msgid "Master Yoda long time here is. "
 msgstr "Master Yoda long time here is. "
 
-#: modules/react.py:22
+#: modules/react.py:22 modules/tweet.py:7
 msgid "Not if anything to say about it!"
 msgstr "Not if anything to say about it!"
 

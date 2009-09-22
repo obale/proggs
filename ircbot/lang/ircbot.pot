@@ -28,7 +28,7 @@ msgstr ""
 msgid "Master Yoda long time here is. "
 msgstr ""
 
-#: modules/react.py:22
+#: modules/react.py:22 modules/tweet.py:7
 msgid "Not if anything to say about it!"
 msgstr ""
 
