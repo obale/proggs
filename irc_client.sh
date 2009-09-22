@@ -58,7 +58,7 @@ parseinput() {
         while read line; do
                 if [[ ${line:0:3} == "MSG" ]]; then
                         if [[ -n ${channel} ]]; then
-                                echo "PRIVMSG " $channel " :" ${line:4} >> $ircin
+                                echo "PRIVMSG " $channel " :"${line:4} >> $ircin
                         fi
                 elif [[ ${line:0:4} == "JOIN" ]]; then
                         channel=${line:4}

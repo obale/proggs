@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: UTF-8 -*-
 # ircbot.py - A simple IRC bot
 #
 # (C) 2009 by MokSec Project
@@ -84,7 +85,9 @@ class IRCBot:
         soc.send('QUIT :Bot is leaving the house!\r\n')
         sys.exit(0)
 
-if __name__ == "__main__":
+IRCBot()
+
+if __name__ == "__main_":
     try:
         pid = os.fork()
         if pid > 0:

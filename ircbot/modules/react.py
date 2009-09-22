@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import random
 import sqlite3
 import time
@@ -39,6 +40,7 @@ def getQuote():
     dbfile = helper.getDbfile()
     dbname = helper.getDbname()
     conn = sqlite3.connect(dbfile)
+    conn.text_factory = str
     curs = conn.cursor()
 
     query = "select min(id) from " + dbname
