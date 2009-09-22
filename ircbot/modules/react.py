@@ -6,6 +6,7 @@ import datetime
 import lang
 import helper
 import tweet
+import header
 
 def greeting(soc, line):
     _ = lang.getGettext()
@@ -18,17 +19,25 @@ def reactOnPRIVMSG(soc, line):
     if ( privmsg == 'uptime' ):
         msg = _('Master Yoda long time here is. ')
         msg += getUptime()
+        msg = [ msg ]
     elif ( privmsg == 'quote' ):
-        msg = getQuote()
+        msg = [ getQuote() ]
     elif ( privmsg == 'tweet' ):
         try:
             name = line[4]
         except Exception:
             name = None
-        msg = tweet.getTimeline(name)
+        msg = [ tweet.getTimeline(name) ]
+    elif ( privmsg == 'header' ):
+        try:
+            url = line[4]
+        except Exception:
+            url = None
+        msg = header.getHeader(url)
     else:
-        msg = _('Not if anything to say about it!')
-    soc.send('PRIVMSG ' + helper.getUser(line[0]) + ' :' + msg + '\r\n')
+        msg = [_('Not if anything to say about it!')]
+    for l in msg:
+        soc.send('PRIVMSG ' + helper.getUser(line[0]) + ' :' + l + '\r\n')
 
 def reactOnMSG(soc, line):
     _ = lang.getGettext()
@@ -37,17 +46,25 @@ def reactOnMSG(soc, line):
     if ( privmsg == '!uptime' ):
         msg = _('Master Yoda long time here is. ')
         msg += getUptime()
+        msg = [ msg ]
     elif ( privmsg == '!quote' ):
-        msg = getQuote()
+        msg = [ getQuote() ]
     elif ( privmsg == '!tweet' ):
         try:
             name = line[4]
         except Exception:
             name = None
-        msg = tweet.getTimeline(name)
+        msg = [ tweet.getTimeline(name) ]
+    elif ( privmsg == '!header' ):
+        try:
+            url = line[4]
+        except Exception:
+            url = None
+        msg = header.getHeader(url)
     else:
         return
-    soc.send('PRIVMSG ' + channel + ' :' + msg + '\r\n')
+    for l in msg:
+        soc.send('PRIVMSG ' + channel + ' :' + l + '\r\n')
 
 def getQuote():
     dbfile = helper.getDbfile()
