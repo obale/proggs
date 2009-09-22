@@ -7,6 +7,7 @@ import lang
 import helper
 import tweet
 import header
+import search
 
 def greeting(soc, line):
     _ = lang.getGettext()
@@ -34,6 +35,12 @@ def reactOnPRIVMSG(soc, line):
         except Exception:
             url = None
         msg = header.getHeader(url)
+    elif ( privmsg == 'search' ):
+        try:
+            searchterm = line[4]
+        except Exception:
+            searchterm = None
+        msg = [ search.getScroogle(searchterm) ]
     else:
         msg = [_('Not if anything to say about it!')]
     for l in msg:
@@ -61,6 +68,12 @@ def reactOnMSG(soc, line):
         except Exception:
             url = None
         msg = header.getHeader(url)
+    elif ( privmsg == '!search' ):
+        try:
+            searchterm = line[4]
+        except Exception:
+            searchterm = None
+        msg = [ search.getScroogle(searchterm) ]
     else:
         return
     for l in msg:
