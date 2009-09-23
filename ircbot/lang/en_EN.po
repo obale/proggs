@@ -7,46 +7,53 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-22 11:48+0200\n"
-"PO-Revision-Date: 2009-09-22 11:48+0200\n"
+"POT-Creation-Date: 2009-09-23 12:58+0200\n"
+"PO-Revision-Date: 2009-09-23 12:58+0200\n"
 "Last-Translator:  <oberhauseralex@networld.to>\n"
 "Language-Team: Language lang/en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: modules/react.py:10
-msgid "Hi "
-msgstr "Hi "
-
-#: modules/react.py:10
-msgid " my friend. May the force be with you."
-msgstr " my friend. May the force be with you."
-
-#: modules/react.py:17 modules/react.py:30
-msgid "Master Yoda long time here is. "
-msgstr "Master Yoda long time here is. "
-
-#: modules/react.py:22 modules/tweet.py:7
+#: modules/header.py:9 modules/react.py:56 modules/tweet.py:8
 msgid "Not if anything to say about it!"
 msgstr "Not if anything to say about it!"
 
-#: modules/react.py:81
+#: modules/privateMessage.py:37
+msgid "Error there is occurred!"
+msgstr "Error there is occurred!"
+
+#: modules/react.py:15
+msgid "Hi "
+msgstr "Hi "
+
+#: modules/react.py:15
+msgid " my friend. May the force be with you."
+msgstr " my friend. May the force be with you."
+
+#: modules/react.py:22 modules/react.py:65
+msgid "Master Yoda long time here is. "
+msgstr "Master Yoda long time here is. "
+
+#: modules/react.py:137
 msgid " weeks, "
 msgstr " weeks, "
 
-#: modules/react.py:82
+#: modules/react.py:138
 msgid " days, "
 msgstr " days, "
 
-#: modules/react.py:83
+#: modules/react.py:139
 msgid " hours, "
 msgstr " hours, "
 
-#: modules/react.py:84
+#: modules/react.py:140
 msgid " minutes, "
 msgstr " minutes, "
 
-#: modules/react.py:85
+#: modules/react.py:141
 msgid " seconds."
 msgstr " seconds."
+
+msgid "Sent!"
+msgstr "Sent!"
