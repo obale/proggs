@@ -1,5 +1,5 @@
 /**
- * sqlite3 quotes.db < create_quotes.sql
+ * sqlite3 db/pm.db < install/create_quote.sql
  */
 DROP TABLE yoda_en;
 CREATE TABLE yoda_en (id INTEGER PRIMARY KEY, quote VARCHAR);

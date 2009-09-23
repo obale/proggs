@@ -25,6 +25,7 @@ from modules import helper
 from modules import react
 from modules import lang
 from modules import logger
+from modules import privateMessage
 
 class IRCBot:
     """
@@ -33,12 +34,15 @@ class IRCBot:
         
         * Greeting if somebody comes to the cannel (query)
         * Quotes (query/channel)
-        * uptime (query/channel)
-        * logging
-        * config
-        * multilanguage (de/en)
-        * utf-8 support
-        * get last Twitter message from given account.
+        * Bot uptime (query/channel)
+        * Logging
+        * Configuration file
+        * Multilanguage (de/en)
+        * UTF-8 support
+        * Get last Twitter message from given account. (query/channel)
+        * Get header from webseite (query/channel)
+        * Get the first search result from ssl.scroogle.org (query/channel)
+        * Private messaging system (query)
     """
     global _
 
@@ -68,14 +72,15 @@ class IRCBot:
                 logger.logging(line)
                 line = string.rstrip(line)
                 line = string.split(line)
-
+                user = helper.getUser(line[0])
                 try:
-                    if ( helper.getUser(line[0]) != nickname and line[1] == 'PRIVMSG' and line[2] == nickname ):
+                    if ( user != nickname and line[1] == 'PRIVMSG' and line[2] == nickname ):
                         react.reactOnPRIVMSG(soc, line)
-                    elif ( helper.getUser(line[0]) != nickname and line[1] == 'PRIVMSG' and line[2] == channel ):
+                    elif ( user != nickname and line[1] == 'PRIVMSG' and line[2] == channel ):
                         react.reactOnMSG(soc, line)
-                    elif ( helper.getUser(line[0]) != nickname and line[1] == 'JOIN' ):
+                    elif ( user != nickname and line[1] == 'JOIN' ):
                         react.greeting(soc, line)
+                        privateMessage.receiveMessages(soc, user)
                 except Exception:
                     pass
 
