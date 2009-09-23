@@ -50,7 +50,7 @@ def receiveMessages(soc, touser):
     init.curs.execute(query)
     for row in init.curs:
         msg = "[" + row[1] + "] by " + row[0] + ": " + row[2]
-        soc.send('PRIVMSG ' + touser + ' :' + msg + '\r\n')
+        soc.send('NOTICE ' + touser + ' :' + msg + '\r\n')
     query = "DELETE FROM " + init.DBNAME + " where touser=\"" + touser + "\""
     init.curs.execute(query)
     clean()

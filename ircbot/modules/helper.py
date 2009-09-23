@@ -62,3 +62,17 @@ def getUser(line):
     user = user.split('!')
     return user[0]
 
+def getVersion():
+    msg = []
+    msg.append("Master Yoda (IRC Bot)")
+    msg.append("          .--.")
+    msg.append("::\`--._,'.::.`._.--'/::::")
+    msg.append("::::.  ` __::__ '  .::::::")
+    msg.append("::::::-:.`'..`'.:-::::::::")
+    msg.append("::::::::\ `--' /::::::::::")
+    msg.append("          `--'")
+    msg.append("by Alex Oberhauser")
+    msg.append("http://irc.networld.to")
+
+    return msg
+

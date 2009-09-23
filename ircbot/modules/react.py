@@ -15,53 +15,10 @@ def greeting(soc, line):
     msg = _('Hi ') + helper.getUser(line[0]) + _(' my friend. May the force be with you.')
     soc.send('PRIVMSG ' + helper.getUser(line[0]) + ' :' + msg + '\r\n')
 
-def reactOnPRIVMSG(soc, line):
-    _ = lang.getGettext()
-    privmsg = line[3].strip(':')
-    if ( privmsg == 'uptime' ):
-        msg = _('Master Yoda long time here is. ')
-        msg += getUptime()
-        msg = [ msg ]
-    elif ( privmsg == 'quote' ):
-        msg = [ getQuote() ]
-    elif ( privmsg == 'tweet' ):
-        try:
-            name = line[4]
-        except Exception:
-            name = None
-        msg = [ tweet.getTimeline(name) ]
-    elif ( privmsg == 'header' ):
-        try:
-            url = line[4]
-        except Exception:
-            url = None
-        msg = header.getHeader(url)
-    elif ( privmsg == 'search' ):
-        try:
-            searchterm = line[4]
-        except Exception:
-            searchterm = None
-        msg = [ search.getScroogle(searchterm) ]
-    elif ( privmsg == 'msg' ):
-        try:
-            touser = line[4]
-            message = line
-            msg = []
-            privateMessage.sendMessage(soc, helper.getUser(line[0]), touser, message)
-        except:
-            touser = None
-            message = None
-            msg = []
-    else:
-        msg = [_('Not if anything to say about it!')]
-    for l in msg:
-        soc.send('PRIVMSG ' + helper.getUser(line[0]) + ' :' + l + '\r\n')
-
 def reactOnMSG(soc, line):
     _ = lang.getGettext()
-    channel = helper.getChannel()
     privmsg = line[3].strip(':')
-    if ( privmsg == '!uptime' ):
+    if ( privmsg == 'uptime' or privmsg == '!uptime' ):
         msg = _('Master Yoda long time here is. ')
         msg += getUptime()
         msg = [ msg ]
@@ -85,10 +42,20 @@ def reactOnMSG(soc, line):
         except Exception:
             searchterm = None
         msg = [ search.getScroogle(searchterm) ]
-    else:
-        return
+    elif ( privmsg == '!msg' ):
+        try:
+            touser = line[4]
+            message = line
+            msg = []
+            privateMessage.sendMessage(soc, helper.getUser(line[0]), touser, message)
+        except:
+            touser = None
+            message = None
+            msg = []
+    elif ( privmsg == '!version' ):
+        msg = helper.getVersion()
     for l in msg:
-        soc.send('PRIVMSG ' + channel + ' :' + l + '\r\n')
+        soc.send('NOTICE ' + helper.getUser(line[0]) + ' :' + l + '\r\n')
 
 def getQuote():
     dbfile = helper.getDbfile()

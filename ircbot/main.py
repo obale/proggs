@@ -43,6 +43,7 @@ class IRCBot:
         * Get header from webseite (query/channel)
         * Get the first search result from ssl.scroogle.org (query/channel)
         * Private messaging system (query)
+        * Shows about page
     """
     global _
 
@@ -74,12 +75,11 @@ class IRCBot:
                 line = string.split(line)
                 user = helper.getUser(line[0])
                 try:
-                    if ( user != nickname and line[1] == 'PRIVMSG' and line[2] == nickname ):
-                        react.reactOnPRIVMSG(soc, line)
-                    elif ( user != nickname and line[1] == 'PRIVMSG' and line[2] == channel ):
+                    if ( user != nickname and line[1] == 'PRIVMSG' ):
                         react.reactOnMSG(soc, line)
                     elif ( user != nickname and line[1] == 'JOIN' ):
-                        react.greeting(soc, line)
+                        # Greeting deactivated
+                        #react.greeting(soc, line)
                         privateMessage.receiveMessages(soc, user)
                 except Exception:
                     pass

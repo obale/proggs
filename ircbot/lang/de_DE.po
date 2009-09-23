@@ -32,7 +32,7 @@ msgstr " mein Freund. Die Macht sei mit dir."
 
 #: modules/react.py:22 modules/react.py:65
 msgid "Master Yoda long time here is. "
-msgstr ""
+msgstr "Master Yoda hier sein lange. "
 
 #: modules/react.py:137
 msgid " weeks, "
