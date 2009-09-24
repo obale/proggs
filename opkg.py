@@ -30,23 +30,30 @@ class OPKGParser:
             self._type = None
 
     def data(self, data):
+        RESET = "\033[0m"
+        GREEN = "\033[1;32m"
+        BLUE = "\033[1;34m"
+        CYAN = "\033[1;36m"
+        BOLD = "\033[1m"
         if ( self._type == 'name' ):
-            print '***********  ' + data,
-            print '***********  '
+            print GREEN + '***********  ' + data,
+            print '***********  ' + RESET
         elif ( self._type == 'homepage' ):
-            print 'homepage   : ' + data
+            print BOLD + 'homepage   : ' + RESET + CYAN + data + RESET
         elif ( self._type == 'developer' ):
-            print 'developer  : ' + data
+            print BOLD + 'developer  : ' + RESET + data
         elif ( self._type == 'dependency' ):
-            print 'dependency : ' + data
+            print BOLD + 'dependency : ' + RESET + data
         elif ( self._type == 'source' ):
-            print 'source     : ' + data
+            print BOLD + 'source     : ' + RESET + CYAN + data + RESET
         elif ( self._type == 'description_short' ):
-            print 'description: ' + data
+            print BOLD + 'description: ' + RESET + data
         elif ( self._type == 'packagelink' ):
-            print 'packagelink: ' + data
+            print BOLD + 'packagelink: ' + RESET + CYAN + data + RESET
         elif ( self._type == 'category' ):
-            print 'category   : ' + data
+            print BOLD + 'category   : ' + RESET+ data
+        elif ( self._type == 'version' ):
+            print BOLD + 'version    : ' + RESET + data
 
     def shortdata(self, data):
         if ( self._type == 'name' ):
