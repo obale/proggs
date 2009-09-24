@@ -93,7 +93,7 @@ class OPKGApi:
 
     def parseAnswer(self, buffer):
         xmldata = buffer.split('<?xml version="1.0"?>')
-        header = '<?xml version="1.0"?>'
+        header = '<?xml version="1.0" encoding="latin1"?>'
         xmldata = header + xmldata[1]
         xmldata = xmldata.split('\r\n0\r\n\r\n')[0]
         return xmldata
