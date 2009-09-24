@@ -52,6 +52,8 @@ short description about it.
 
   * ircbot             := A IRC bot in python written from scratch.
 
+  * opkg.py            := A python implementation of the API at www.opkg.org
+
 
                                                      Annotation <- 0x30000000
                                                      ======================== 
