@@ -77,6 +77,7 @@ class IRCBot:
                 user = helper.getUser(line[0])
                 try:
                     if ( user != nickname and line[1] == 'PRIVMSG' ):
+                        react.reactOnMSG(soc, line)
                         try:
                             target = line[2]
                             command = line[3]
@@ -84,7 +85,6 @@ class IRCBot:
                                 ctcp.checkCTCP(soc, user, command)
                         except:
                             pass
-                        react.reactOnMSG(soc, line)
                     elif ( user != nickname and line[1] == 'JOIN' ):
                         # Greeting deactivated
                         #react.greeting(soc, line)
