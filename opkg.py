@@ -1,8 +1,27 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# opkg.py - Searching packages on http://www.opkg.org
+#
+# (C) 2009 by MokSec Project
+# Written by Alex Oberhauser <oberhauseralex@networld.to>
+# All Rights Reserved
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# hut WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this software.  If not, see <http://www.gnu.org/licenses/>
+import sys
+import signal
+import socket
 from optparse import OptionParser
 from xml.parsers import expat
-import socket
 
 class OPKGParser:
     def __init__(self, short):
@@ -56,10 +75,12 @@ class OPKGParser:
             print BOLD + 'version    : ' + RESET + data
 
     def shortdata(self, data):
-        if ( self._type == 'name' ):
-            print data
-        elif ( self._type == 'id'):
-            print '[' + data + '] ',
+        RESET = "\033[0m"
+        GREEN = "\033[1;32m"
+        if ( self._type == 'id'):
+            print '[' + data + ']',
+        elif ( self._type == 'name' ):
+            print GREEN + data + RESET
 
 class OPKGApi:
     def __init__(self):
@@ -86,7 +107,7 @@ class OPKGApi:
         data = " "
         buffer = ""
         while data:
-            data = self._soc.recv(512)
+            data = self._soc.recv(1024)
             buffer += data
         self._soc.close()
         return self.parseAnswer(buffer)
@@ -120,7 +141,12 @@ class OPKG:
         _opkgparser.feed(data)
         _opkgparser.close()
 
+def sigint(signum, frame):
+    print "Thank you for using this piece of software"
+    sys.exit(0)
+
 if __name__ == "__main__":
+    signal.signal(signal.SIGINT, sigint)
     parser = OptionParser()
     parser.add_option("-n", "--number", type="int", dest="number", help="Print information about the package NUMBER", metavar="NUMBER")
     parser.add_option("-s", "--search", type="str", dest="searchterm", help="Search for the PACKAGE", metavar="PACKAGE")

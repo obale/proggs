@@ -49,6 +49,9 @@ def checkCTCP(soc, user, command):
         sendCommandPRIVMSG(soc, user, 'USERINFO :I\'m a python bot written from scratch.')
     elif ( command == ':\x01TIME\x01' ):
         sendCommandPRIVMSG(soc, user, 'TIME :' + helper.getTime() )
-    else:
-        newcommand = command.strip(':\x01')
-        sendCommandNOTICE(soc, user, ':\x01ERRMSG ' + newcommand + ' :Query is unknown\x01')
+    # XXX: Prints on every message in query, except from the three (3) cases
+    #      above. It should only print this message if there is an unknown
+    #      ctcp message, not always.
+    #else:
+        #newcommand = command.strip(':\x01')
+        #sendCommandNOTICE(soc, user, ':\x01ERRMSG ' + newcommand + ' :Query is unknown\x01')
