@@ -9,6 +9,7 @@ import tweet
 import header
 import search
 import privateMessage
+import feed
 
 def greeting(soc, line):
     _ = lang.getGettext()
@@ -52,10 +53,25 @@ def reactOnMSG(soc, line):
             touser = None
             message = None
             msg = []
+    elif ( privmsg == '!feed' ):
+        try:
+            feedname = line[4]
+        except:
+            feedname = None
+            msg = feed.sendFeed(feedname)
+        if feedname is not None:
+            try:
+                number = line[5]
+                msg = feed.getEntry(number, feedname)
+            except:
+                msg = feed.sendFeed(feedname)
     elif ( privmsg == '!version' ):
         msg = helper.getVersion()
-    for l in msg:
-        soc.send('NOTICE ' + helper.getUser(line[0]) + ' :' + l + '\r\n')
+    for entry in msg:
+        try:
+            soc.send(bytearray('NOTICE ' + helper.getUser(line[0]) + ' :' + entry + '\r\n', 'utf-8'))
+        except:
+            pass
 
 def getQuote():
     dbfile = helper.getDbfile()
