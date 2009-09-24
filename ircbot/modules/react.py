@@ -42,7 +42,7 @@ def reactOnMSG(soc, line):
             searchterm = line[4]
         except Exception:
             searchterm = None
-        msg = [ search.getScroogle(searchterm) ]
+        msg = search.getScroogle(searchterm)
     elif ( privmsg == '!msg' ):
         try:
             touser = line[4]

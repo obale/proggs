@@ -16,4 +16,4 @@ def getScroogle(searchterm):
         result1 = result0.lower()
         result = re.findall("http[s]*://[a-zA-Z$-_.+!*'(),?;]*", result1)
 
-        return result[1]
+        return [ result[1] ]
