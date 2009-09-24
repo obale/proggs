@@ -26,24 +26,25 @@ from modules import react
 from modules import lang
 from modules import logger
 from modules import privateMessage
+from modules import ctcp
 
 class IRCBot:
     """
     A IRC bot written from scratch.
     Functionality:
-        
-        * Greeting if somebody comes to the cannel (query)
-        * Quotes (query/channel)
-        * Bot uptime (query/channel)
-        * Logging
-        * Configuration file
-        * Multilanguage (de/en)
-        * UTF-8 support
-        * Get last Twitter message from given account. (query/channel)
-        * Get header from webseite (query/channel)
-        * Get the first search result from ssl.scroogle.org (query/channel)
-        * Private messaging system (query)
-        * Shows about page
+        <li> Multilanguage - de_DE/en_EN
+        <li> Database Backend (sqlite3)
+        <li> Configuration File
+        <li> UTF-8 encoding
+        <li> CTCP support for the following commands: VERSION, USERINFO, TIME, ERRMSG (if command not known)
+        <li> Greeting (PRIVMSG) if new user joins channel. (DISABLED: distempering)
+        <li> Last twitter post of an user (if not protected)
+        <li> Quotes (Can be easily modified)
+        <li> Logging. (DISABLED: privacy concern)
+        <li> Search on ssl.scroogle.org
+        <li> Returns the header of a given website
+        <li> Messaging system
+        <li> Feed Reader
     """
     global _
 
@@ -76,6 +77,13 @@ class IRCBot:
                 user = helper.getUser(line[0])
                 try:
                     if ( user != nickname and line[1] == 'PRIVMSG' ):
+                        try:
+                            target = line[2]
+                            command = line[3]
+                            if ( target == nickname ):
+                                ctcp.checkCTCP(soc, user, command)
+                        except:
+                            pass
                         react.reactOnMSG(soc, line)
                     elif ( user != nickname and line[1] == 'JOIN' ):
                         # Greeting deactivated

@@ -57,6 +57,10 @@ def getLogfile():
 def getStarttime():
     return connect.starttime
 
+def getTime():
+    dt = datetime.datetime.now()
+    return dt.strftime("%A, %d. %B %Y %H:%M")
+
 def getUser(line):
     user = line.strip(':')
     user = user.split('!')
