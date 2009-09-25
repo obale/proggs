@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>
 import sys
+import os
 import signal
 import socket
 import sqlite3
@@ -202,26 +203,34 @@ class OPKG:
         self._save = True
         self._nosave = not self._save
 
-    def getPackageByNumber(self, number):
+    def install(self, packagelink):
+        print "Installing " + packagelink
+
+    def getPackageByNumber(self, number, install):
         conn = sqlite3.connect('opkg.db')
         conn.text_factory = str
         curs = conn.cursor()
         curs.execute('SELECT id, name, homepage, developer, dependency, source,\
                 description_short, packagelink, category, version FROM packages WHERE id=' + str(number))
         for row in curs.fetchall():
-            self.printPackage(self._color, row)
+            if install:
+                self.install(row[7])
+            else: self.printPackage(self._color, row)
         conn.commit()
         curs.close()
 
-    def getPackageBySearchterm(self, searchterm):
+    def getPackageBySearchterm(self, searchterm, install):
         conn = sqlite3.connect('opkg.db')
         conn.text_factory = str
         curs = conn.cursor()
         curs.execute('SELECT id, name, homepage, developer, dependency, source,\
                 description_short, packagelink, category, version FROM \
-                packages WHERE name LIKE "%' + searchterm + '%"')
+                packages WHERE name LIKE "%' + searchterm + '%" OR \
+                description_short LIKE "%' + searchterm + '%"')
         for row in curs.fetchall():
-            self.printPackage(self._color, row)
+            if install:
+                self.install(row[7])
+            else: self.printPackage(self._color, row)
         conn.commit()
         curs.close()
 
@@ -300,18 +309,21 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
 
     opkg = OPKG()
+    if not os.path.isfile('opkg.db'):
+        print "No database found! Please wait until the update process if finished..."
+        opkg.savePackages()
+        assert os.path.isfile('opkg.db')
 
     if options.update:
         opkg.savePackages()
-    elif options.install:
-        print "Install package. [NOT IMPLEMTED]"
-
     if options.number is not None:
-        opkg.getPackageByNumber(options.number)
+        opkg.getPackageByNumber(options.number, options.install)
     elif options.searchterm is not None:
-        opkg.getPackageBySearchterm(options.searchterm)
+        opkg.getPackageBySearchterm(options.searchterm, options.install)
     elif options.all:
         opkg.getAllPackages()
+        if options.install:
+            print "Can't install all packages!"
 
 
 
