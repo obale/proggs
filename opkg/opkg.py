@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# opkg.py - Searching packages on http://www.opkg.org
+# opkg.py - Searching and Installing packages on http://www.opkg.org
 #
 # (C) 2009 by MokSec Project
 # Written by Alex Oberhauser <oberhauseralex@networld.to>
@@ -24,15 +24,15 @@ import socket
 import sqlite3
 from optparse import OptionParser
 from xml.parsers import expat
+from subprocess import call
 
 class OPKGParser:
-    def __init__(self, short, color, save):
+    def __init__(self, short, save):
         self._type = None
         self._package = False
         self._parser = expat.ParserCreate()
         self._parser.StartElementHandler = self.start
         self._parser.EndElementHandler = self.end
-        self._color = color
         self._save = save
 
         self._entry = self.getEmptyEntry()
@@ -202,9 +202,25 @@ class OPKG:
         self._nocolor = not self._color
         self._save = True
         self._nosave = not self._save
+        self._installstr = ""
+        self._installnames = ""
 
-    def install(self, packagelink):
-        print "Installing " + packagelink
+    def install(self, name, packagelink):
+        self._installstr += packagelink + " "
+        self._installnames += name + " "
+
+    def startInstallation(self):
+        if self._installstr != "":
+            print self._installnames
+            answer = 'N'
+            print "Do you want to install the package(s) above (y/N):",
+            answer = sys.stdin.read(1)
+            if answer == 'y' or answer == 'Y':
+                call(['opkg', 'install', self._installstr ])
+            else:
+                print "Aborted!"
+        else:
+            print "No package found to install!"
 
     def getPackageByNumber(self, number, install):
         conn = sqlite3.connect('opkg.db')
@@ -214,10 +230,11 @@ class OPKG:
                 description_short, packagelink, category, version FROM packages WHERE id=' + str(number))
         for row in curs.fetchall():
             if install:
-                self.install(row[7])
+                self.install(row[1], row[7])
             else: self.printPackage(self._color, row)
         conn.commit()
         curs.close()
+        if install: self.startInstallation()
 
     def getPackageBySearchterm(self, searchterm, install):
         conn = sqlite3.connect('opkg.db')
@@ -229,10 +246,11 @@ class OPKG:
                 description_short LIKE "%' + searchterm + '%"')
         for row in curs.fetchall():
             if install:
-                self.install(row[7])
+                self.install(row[1], row[7])
             else: self.printPackage(self._color, row)
         conn.commit()
         curs.close()
+        if install: self.startInstallation()
 
     def getAllPackages(self):
         conn = sqlite3.connect('opkg.db')
@@ -289,7 +307,7 @@ class OPKG:
 
     def savePackages(self):
         data = self._opkgxml.getXMLAll()
-        _opkgparser = OPKGParser(None, self._nocolor, self._save)
+        _opkgparser = OPKGParser(None, self._save)
         _opkgparser.feed(data)
         _opkgparser.close()
 
@@ -309,7 +327,7 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
 
     opkg = OPKG()
-    if not os.path.isfile('opkg.db'):
+    if not os.path.isfile('opkg.db') and not options.update:
         print "No database found! Please wait until the update process if finished..."
         opkg.savePackages()
         assert os.path.isfile('opkg.db')
