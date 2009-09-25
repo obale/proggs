@@ -38,12 +38,7 @@ class OPKGParser:
 
         if self._save:
             self.createEmptyDatabase()
-            self._parser.CharacterDataHandler = self.saveData
-        else:
-            if not short:
-                self._parser.CharacterDataHandler = self.printData
-            else:
-                self._parser.CharacterDataHandler = self.printShortData
+        self._parser.CharacterDataHandler = self.saveData
 
     def getEmptyEntry(self):
         return { 'id':None, 'name':None, 'homepage':None, \
@@ -68,77 +63,36 @@ class OPKGParser:
             self._type = None
         if ( tag == 'package' ):
             self._package = False
-            self.saveEntry(self._entry)
-            del self._entry
-            self._entry = self.getEmptyEntry()
-
-    def printData(self, data):
-        if self._color:
-            RESET = "\033[0m"
-            GREEN = "\033[1;32m"
-            BLUE = "\033[1;34m"
-            CYAN = "\033[1;36m"
-            BOLD = "\033[1m"
-        else:
-            RESET = ""
-            GREEN = ""
-            BLUE = ""
-            CYAN = ""
-            BOLD = ""
-        if ( self._type == 'name' ):
-            print GREEN + '***********  ' + data,
-            print '***********  ' + RESET
-        elif ( self._type == 'homepage' ):
-            print BOLD + 'homepage   : ' + RESET + CYAN + data + RESET
-        elif ( self._type == 'developer' ):
-            print BOLD + 'developer  : ' + RESET + data
-        elif ( self._type == 'dependency' ):
-            print BOLD + 'dependency : ' + RESET + data
-        elif ( self._type == 'source' ):
-            print BOLD + 'source     : ' + RESET + CYAN + data + RESET
-        elif ( self._type == 'description_short' ):
-            print BOLD + 'description: ' + RESET + data
-        elif ( self._type == 'packagelink' ):
-            print BOLD + 'packagelink: ' + RESET + CYAN + data + RESET
-        elif ( self._type == 'category' ):
-            print BOLD + 'category   : ' + RESET+ data
-        elif ( self._type == 'version' ):
-            print BOLD + 'version    : ' + RESET + data
-
-    def printShortData(self, data):
-        if self._color:
-            RESET = "\033[0m"
-            GREEN = "\033[1;32m"
-        else:
-            RESET = ""
-            GREEN = ""
-        if ( self._type == 'id'):
-            print '[' + data + ']',
-        elif ( self._type == 'name' ):
-            print GREEN + data + RESET
+            if self._save:
+                self.saveEntry(self._entry)
+                del self._entry
+                self._entry = self.getEmptyEntry()
 
     def saveData(self, data):
         if self._package:
-            if ( self._type == 'id' ):
+            if self._type == 'id':
                 self._entry['id'] = data
-            elif ( self._type == 'name' ):
+            elif self._type == 'name':
                 self._entry['name'] = data
-            elif ( self._type == 'homepage' ):
+            elif self._type == 'homepage':
                 self._entry['homepage'] = data
-            elif ( self._type == 'developer' ):
+            elif self._type == 'developer':
                 self._entry['developer'] = data
-            elif ( self._type == 'dependency' ):
+            elif self._type == 'dependency':
                 self._entry['dependency'].append(data)
-            elif ( self._type == 'source' ):
+            elif self._type == 'source':
                 self._entry['source'] = data
-            elif ( self._type == 'description_short' ):
+            elif self._type == 'description_short':
                 self._entry['description_short'] = data
-            elif ( self._type == 'packagelink' ):
+            elif self._type == 'packagelink':
                 self._entry['packagelink'] = data
-            elif ( self._type == 'category' ):
+            elif self._type == 'category':
                 self._entry['category'] = data
-            elif ( self._type == 'version' ):
+            elif self._type == 'version':
                 self._entry['version'] = data
+
+    def getEntry(self):
+        return self._entry
 
     def saveEntry(self, entry):
         conn = sqlite3.connect('opkg.db')
@@ -147,26 +101,46 @@ class OPKGParser:
         query = 'INSERT INTO packages VALUES ( '
         query += entry['id'] + ', '
         query += '"' + entry['name'] + '", '
-        query += '"' + str(entry['homepage']) + '", '
+        if entry['homepage'] is not None:
+            query += '"' + str(entry['homepage']) + '", '
+        else:
+            query += '"unknown", '
         if entry['developer'] is not None:
             query += '"' + entry['developer'] + '", '
         else:
-            query += '"", '
+            query += '"unknown", '
         dependency = ''
         for line in entry['dependency']:
             dependency += line + ' '
-        query += '"' + str(dependency) + '", '
-        query += '"' + str(entry['source']) + '", '
+        if dependency != '':
+            query += '"' + str(dependency) + '", '
+        else:
+            query +='"unknown", '
+        if entry['source'] is not None:
+            query += '"' + str(entry['source']) + '", '
+        else:
+            query += '"unknown", '
         if entry['description_short'] is not None:
             query += '"' + entry['description_short'] + '", '
         else:
-            query += '"", '
-        query += '"' + str(entry['packagelink']) + '", '
-        query += '"' + str(entry['category']) + '", '
-        query += '"' + str(entry['version']) + '"'
+            query += '"unknown", '
+        if entry['packagelink'] is not None:
+            query += '"' + str(entry['packagelink']) + '", '
+        else:
+            query +='"unknown", '
+        if entry['category'] is not None:
+            query += '"' + str(entry['category']) + '", '
+        else:
+            query +='"unknown", '
+        if entry['version'] is not None:
+            query += '"' + str(entry['version']) + '"'
+        else:
+            query +='"unknown", '
         query += ')'
-        print query
-        curs.execute(query)
+        try:
+            curs.execute(query)
+        except sqlite3.OperationalError, e:
+            print >> sys.stderr, "Coudn't save entry " + entry['name'] + " to the database! ERROR: ", e
         conn.commit()
         curs.close()
 
@@ -229,22 +203,80 @@ class OPKG:
         self._nosave = not self._save
 
     def getPackageByNumber(self, number):
-        data = self._opkgxml.getXMLByNumber(number)
-        _opkgparser = OPKGParser(False, self._color, self._nosave)
-        _opkgparser.feed(data)
-        _opkgparser.close()
+        conn = sqlite3.connect('opkg.db')
+        conn.text_factory = str
+        curs = conn.cursor()
+        curs.execute('SELECT id, name, homepage, developer, dependency, source,\
+                description_short, packagelink, category, version FROM packages WHERE id=' + str(number))
+        for row in curs.fetchall():
+            self.printPackage(self._color, row)
+        conn.commit()
+        curs.close()
 
     def getPackageBySearchterm(self, searchterm):
-        data = self._opkgxml.getXMLBySearchterm(searchterm)
-        _opkgparser = OPKGParser(False, self._color, self._nosave)
-        _opkgparser.feed(data)
-        _opkgparser.close()
+        conn = sqlite3.connect('opkg.db')
+        conn.text_factory = str
+        curs = conn.cursor()
+        curs.execute('SELECT id, name, homepage, developer, dependency, source,\
+                description_short, packagelink, category, version FROM \
+                packages WHERE name LIKE "%' + searchterm + '%"')
+        for row in curs.fetchall():
+            self.printPackage(self._color, row)
+        conn.commit()
+        curs.close()
 
     def getAllPackages(self):
-        data = self._opkgxml.getXMLAll()
-        _opkgparser = OPKGParser(True, self._color, self._nosave)
-        _opkgparser.feed(data)
-        _opkgparser.close()
+        conn = sqlite3.connect('opkg.db')
+        conn.text_factory = str
+        curs = conn.cursor()
+        curs.execute('SELECT id, name, homepage, developer, dependency, source,\
+                description_short, packagelink, category, version FROM \
+                packages')
+        for row in curs.fetchall():
+            self.printPackageShort(self._color, row)
+        conn.commit()
+        curs.close()
+
+    def printPackage(self, color, entry):
+        if color:
+            RESET = "\033[0m"
+            GREEN = "\033[1;32m"
+            BLUE = "\033[1;34m"
+            CYAN = "\033[1;36m"
+            BOLD = "\033[1m"
+        else:
+            RESET = ""
+            GREEN = ""
+            BLUE = ""
+            CYAN = ""
+            BOLD = ""
+        print GREEN + '*********** [' + str(entry[0]) + '] ' + entry[1] + ' ***********  ' + RESET
+        if entry[2] != "unknown":
+            print BOLD + 'homepage   : ' + RESET + CYAN + entry[2] + RESET
+        if entry[3] != "unknown":
+            print BOLD + 'developer  : ' + RESET + entry[3]
+        if entry[4] != "unknown":
+            print BOLD + 'dependency : ' + RESET + entry[4]
+        if entry[5] != "unknown":
+            print BOLD + 'source     : ' + RESET + CYAN + entry[5] + RESET
+        if entry[6] != "unknown":
+            print BOLD + 'description: ' + RESET + entry[6]
+        if entry[7] != "unknown":
+            print BOLD + 'packagelink: ' + RESET + CYAN + entry[7]  + RESET
+        if entry[8] != "unknown":
+            print BOLD + 'category   : ' + RESET+ entry[8]
+        if entry[9] != "unknown":
+            print BOLD + 'version    : ' + RESET + entry[9]
+
+    def printPackageShort(self, color, entry):
+        if self._color:
+            RESET = "\033[0m"
+            GREEN = "\033[1;32m"
+        else:
+            RESET = ""
+            GREEN = ""
+        print '[' + str(entry[0]) + ']',
+        print GREEN + entry[1] + RESET
 
     def savePackages(self):
         data = self._opkgxml.getXMLAll()
@@ -273,10 +305,13 @@ if __name__ == "__main__":
         opkg.savePackages()
     elif options.install:
         print "Install package. [NOT IMPLEMTED]"
-    elif options.number is not None:
+
+    if options.number is not None:
         opkg.getPackageByNumber(options.number)
     elif options.searchterm is not None:
         opkg.getPackageBySearchterm(options.searchterm)
     elif options.all:
         opkg.getAllPackages()
+
+
 
