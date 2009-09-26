@@ -1,0 +1,9 @@
+[tweetC2]
+database = db/tweetC2.db
+verbose = True
+
+[accounts]
+login = user1:password1, user2:password2, user3:password3
+
+[server]
+connection = server1:port1, server2:port2

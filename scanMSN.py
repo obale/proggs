@@ -16,7 +16,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>
-import sys
+import sys, os
 import re
 from scapy.all import *
 
@@ -24,6 +24,10 @@ class scanMSN:
     global packets
 
     def __init__(self):
+        if os.geteuid != 0:
+            print "\033[0;31mATTENTION:\033[m Please start this program as \
+root, otherwise the network scanning part is not working!"
+            sys.exit(1)
         self.packets = None
         print
 
