@@ -54,6 +54,8 @@ short description about it.
 
   * opkg.py            := A python implementation of the API at www.opkg.org
 
+  * tweetC2            := A twitter command and control bot
+
 
                                                      Annotation <- 0x30000000
                                                      ======================== 

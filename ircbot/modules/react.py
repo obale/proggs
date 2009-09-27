@@ -35,6 +35,7 @@ def greeting(soc, line):
 
 def reactOnMSG(soc, line):
     _ = lang.getGettext()
+    msg = []
     privmsg = line[3].strip(':')
     if ( privmsg == 'uptime' or privmsg == '!uptime' ):
         msg = _('Master Yoda long time here is. ')
@@ -84,8 +85,11 @@ def reactOnMSG(soc, line):
                 msg = feed.sendFeed(feedname)
     elif ( privmsg == '!version' ):
         msg = helper.getVersion()
+    else: msg = []
     for entry in msg:
         try:
+            entry = entry.strip('\x00')
+            entry = '\x02' + entry + '\x03'
             soc.send(bytearray('NOTICE ' + helper.getUser(line[0]) + ' :' + entry + '\r\n', 'utf-8'))
         except:
             pass
