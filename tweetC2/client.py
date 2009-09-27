@@ -34,7 +34,7 @@ class tweetC2client:
         if password is None:
             password = self.getPassword(username)
         if password is None:
-            print "\033[1;31m[ERROR]\033[m No password for the user found!"
+            helper.printErrorVerbose("No password for the user found!")
             sys.exit(0)
         self.api = twitter.Api(username, password)
 
@@ -74,6 +74,6 @@ help="Encode a message")
         parser = commandParser.commandParser()
         print parser.calcHash(self.prefix + options.msg)
     else:
-        print "\033[1;31m[ERROR]\033[m Please specify at least an user and a\
-message or -e/--encode and a message."
+        helper.printErrorVerbose("Please specify at least an user and a \
+message or -e/--encode and a message.")
 

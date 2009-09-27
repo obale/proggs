@@ -18,13 +18,27 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>
+import os
+import sys
 import binascii
 import ConfigParser
 
 class config:
     configfile = "conf/tweetC2.cfg"
+    defaultconfig = "conf/tweetC2.cfg.default"
     accounts = None
+
     def __init__(self):
+        if os.path.exists(self.defaultconfig) and \
+not os.path.exists(self.configfile):
+            print "Please copy the file '" + self.defaultconfig + "' to '" + \
+self.configfile + "'and edit it!"
+            sys.exit(0)
+        if not os.path.exists(self.defaultconfig) and \
+not os.path.exists(self.configfile):
+            print "There is no config file! Please contact the developer!"
+            sys.exit(0)
+
         cfgparser = ConfigParser.SafeConfigParser()
         cfgparser.read(self.configfile)
         self.accounts = cfgparser.get('accounts', 'login')
