@@ -25,17 +25,18 @@ from modules import config
 from modules import twitterApi
 from modules import commandParser
 from modules import commandHandler
+from modules import helper
 
 def checkCommand(signum, frame):
     seconds = 30
     handler = commandHandler.commandHandler()
     handler.handleCommand()
-    if verbose: print "\033[0;33m[INFO]\033[m Sleeping for " + str(seconds) + " seconds"
+    msg = 'Sleeping for ' + str(seconds) + ' seconds'
+    helper.printInfoVerbose(msg)
     signal.alarm(seconds)
 
 def quit(signum, frame):
-    if verbose:
-        print "Shutting down..."
+    helper.printInfoVerbose('Shutting down...')
     sys.exit(0)
 
 def mainloop():
@@ -46,6 +47,7 @@ if __name__ == "__main__":
     signal.signal(signal.SIGALRM, checkCommand)
     signal.signal(signal.SIGINT, quit)
     cfgobj = config.config()
+    helper = helper.helper()
     verbose = cfgobj.getVerbose()
     signal.alarm(1)
     mainloop()

@@ -1,6 +1,7 @@
 [tweetC2]
-database = db/tweetC2.db
 verbose = True
+color = True
+database = db/tweetC2.db
 
 [accounts]
 login = user1:password1, user2:password2, user3:password3

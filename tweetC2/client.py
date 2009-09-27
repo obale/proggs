@@ -23,10 +23,14 @@ import twitter
 from optparse import OptionParser
 from modules import config
 from modules import commandParser
+from modules import helper
 
 # '\x00Today is really beautiful. We have here nice'
 class tweetC2client:
     def __init__(self, username, password):
+        cfg = config.config()
+        self.accounts = cfg.getAccounts()
+        self.prefix = cfg.getCommandPrefix()
         if password is None:
             password = self.getPassword(username)
         if password is None:
@@ -35,20 +39,18 @@ class tweetC2client:
         self.api = twitter.Api(username, password)
 
     def getPassword(self, username):
-        cfg = config.config()
-        accounts = cfg.getAccounts()
-        for account in accounts:
+        for account in self.accounts:
             if account[0] == username:
                 return account[1]
         return None
 
     def sendMessage(self, command):
-        command = '\x00' + command
+        command = self.prefix + command
         try:
             self.api.PostUpdate(command)
-            print "\033[0;33m[INFO]\033[m Message send as command."
+            helper.printInfoVerbose("Message send as command.")
         except:
-            print "\033[1;31m[ERROR]\033[m Message not send!"
+            helper.printErrorVerbose("Message not send!")
 
 if __name__ == "__main__":
     parser = OptionParser()
@@ -63,12 +65,15 @@ help="Encode a message")
 
     (options, args) = parser.parse_args()
 
+    helper = helper.helper()
+
     if options.user is not None and options.msg is not None:
         tweetobj = tweetC2client(options.user, options.pwd)
         tweetobj.sendMessage(options.msg)
     elif options.msg is not None and options.encode:
         parser = commandParser.commandParser()
-        print parser.calcHash("\x00" + options.msg)
+        print parser.calcHash(self.prefix + options.msg)
     else:
         print "\033[1;31m[ERROR]\033[m Please specify at least an user and a\
 message or -e/--encode and a message."
+

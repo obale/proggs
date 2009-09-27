@@ -22,6 +22,7 @@ import commandParser
 import twitterApi
 import config
 import sqlite3
+import helper
 
 class commandHandler:
     def __init__(self):
@@ -29,6 +30,7 @@ class commandHandler:
         self.twapi = twitterApi.twitterApi()
         self.cfg = config.config()
         self.verbose = self.cfg.getVerbose()
+        self.helper = helper.helper()
 
     def handleCommand(self):
         entries = self.twapi.getLastEntry()
@@ -36,10 +38,10 @@ class commandHandler:
             if self.checkCommandHandled(entry):
                 return
             if 'cmd_testing' == self.cmdparser.checkCommand(entry[1]):
-                if self.verbose: print "\033[0;32m[HIT]\033[m  " + entry[0] + " sent \033[1mcmd_testing\033[m"
+                self.helper.printHitVerbose(entry[0], 'cmd_testing')
                 self.setCommandHandled(entry)
             elif 'cmd_hello' == self.cmdparser.checkCommand(entry[1]):
-                if self.verbose: print "\033[0;32m[HIT]\033[m  " + entry[0] + " sent \033[1mcmd_hello\033[m"
+                self.helper.printHitVerbose(entry[0], 'cmd_hallo')
                 self.setCommandHandled(entry)
 
     def setCommandHandled(self, entry):

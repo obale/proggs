@@ -18,6 +18,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>
+import binascii
 import ConfigParser
 
 class config:
@@ -29,10 +30,19 @@ class config:
         self.accounts = cfgparser.get('accounts', 'login')
         self.servers = cfgparser.get('server', 'connection')
         self.verbose = cfgparser.getboolean('tweetC2', 'verbose')
+        self.color = cfgparser.getboolean('tweetC2', 'color')
+        self.commandprefix = cfgparser.get('tweetC2', 'commandprefix')
+        self.commandprefix = binascii.unhexlify(self.commandprefix)
         self.database = cfgparser.get('tweetC2', 'database')
 
     def getVerbose(self):
         return self.verbose
+
+    def getColor(self):
+        return self.color
+
+    def getCommandPrefix(self):
+        return unicode(self.commandprefix)
 
     def getDatabase(self):
         return self.database
