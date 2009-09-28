@@ -55,7 +55,7 @@ def reactOnMSG(soc, line):
         except Exception:
             url = None
         msg = header.getHeader(url)
-    elif ( privmsg == '!search' ):
+    elif ( privmsg == '!search' or privmsg == '!google'):
         try:
             searchterm = line[4]
         except Exception:

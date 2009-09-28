@@ -16,6 +16,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>
+import re
 import string
 import feedparser
 
@@ -48,6 +49,8 @@ def getEntry(number, feedname):
         try:
             summary = init.feed['items'][nr]['summary'][0:256]
             summary = summary.replace('\n', '')
+            compile = re.compile(r'<.*?>')
+            summary = compile.sub('', summary)
             msg.append('Text : ' + summary)
         except KeyError:
             msg.append('Text : -')
@@ -56,7 +59,7 @@ def getEntry(number, feedname):
     return msg
 
 def getURL(feedname):
-    if ( feedname == 'milworm' ):
+    if ( feedname == 'milw0rm' ):
         url = 'http://www.milw0rm.com/rss.php'
     elif ( feedname == 'heisesec' ):
         url = 'http://www.heise.de/security/news/news-atom.xml'
@@ -102,7 +105,7 @@ def sendFeed(feedname):
 def getFeeds():
     msg = []
     msg.append('-= Projects : moksec')
-    msg.append('-= Security : milworm, heisesec, sectube, debsec')
+    msg.append('-= Security : milw0rm, heisesec, sectube, debsec')
     msg.append('-= News     : ntv, n24, spiegel, cnn, bbc, prolinux, slashdot')
     msg.append('-= Science  : sciencedaily, theregister')
     msg.append('-= Torrent  : isohunt, torrent')
