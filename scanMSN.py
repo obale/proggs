@@ -24,10 +24,10 @@ class scanMSN:
     global packets
 
     def __init__(self):
-        if os.geteuid != 0:
-            print "\033[0;31mATTENTION:\033[m Please start this program as \
-root, otherwise the network scanning part is not working!"
-            sys.exit(1)
+#        if os.geteuid != 0:
+#            print "\033[0;31mATTENTION:\033[m Please start this program as \
+#root, otherwise the network scanning part is not working!"
+#            sys.exit(1)
         self.packets = None
         print
 
