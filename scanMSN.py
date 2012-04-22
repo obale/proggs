@@ -33,12 +33,12 @@ class scanMSN:
 
     def scan(self):
         seconds = self.readSeconds()
-        print "==> NOTICE: Starting the sniffing for " + str(seconds) + " seconds."
+        print "[*]\t Starting the sniffing for " + str(seconds) + " seconds."
         self.packets = sniff(timeout=seconds)
 
     def filterContacts(self):
         if self.packets is None:
-            print "!=> ERROR: There are no packets to filter."
+            print "[!!]\t There are no packets to filter!"
             return
 
         for p in self.packets:
@@ -60,6 +60,19 @@ class scanMSN:
            entry = re.search("'[a-zA-Z0-9]+'", entry)
            print entry.group(0)
 
+    def filterUserInfos(self):
+        if self.packets is None:
+            print "[!!]\t There are no packets to filter!"
+            return
+
+        for p in self.packets:
+            pkgload = str(p.payload)
+            result = re.findall(".*PRP.*", pkgload)
+            if result is not None:
+                for entry in result:
+                    entry = re.search("'[a-zA-Z0-9]+'", entry)
+                    print entry.group(0)
+
 
     def readSeconds(self):
         if len(sys.argv) != 2:
@@ -75,4 +88,5 @@ class scanMSN:
 
 obj = scanMSN()
 obj.scan()
-obj.filterContacts()
+#obj.filterContacts()
+obj.filterUserInfos()
